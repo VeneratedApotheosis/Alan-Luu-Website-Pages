@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Navbar from '@/components/Navbar'
 import ContentPanel from '@/components/ContentPanel'
+import Avatar from '@/components/Avatar'
 
 type Section = 'about' | 'works' | 'links'
 
@@ -16,16 +17,12 @@ export default function Home() {
       style={{
         backgroundColor: isMusicMode ? 'var(--bg-music)' : 'var(--bg-content)',
         color: isMusicMode ? 'var(--text-music)' : 'var(--text-content)',
+        transition: 'background-color 0.8s ease, color 0.6s ease',
       }}
     >
       <ContentPanel isMusicMode={isMusicMode} activeSection={activeSection} />
 
-      {/* Right side avatar placeholder */}
-      <div className="absolute top-0 right-0 w-[45%] h-[calc(100vh-96px)] flex items-center justify-center">
-        <div className="w-64 h-64 rounded-full bg-gray-300 flex items-center justify-center text-gray-500">
-          avatar
-        </div>
-      </div>
+      <Avatar isMusicMode={isMusicMode} />
 
       <Navbar
         isMusicMode={isMusicMode}
