@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
+import { images } from '@/data/alan'
 
 type Props = {
   isMusicMode: boolean
@@ -25,6 +26,8 @@ function MusicAvatar() {
     return () => clearTimeout(timer)
   }, [])
 
+  const { src, alt } = images[0];
+
   return (
     <div
         className="transition-all duration-700 ease-out"
@@ -35,8 +38,8 @@ function MusicAvatar() {
         }}
     >
       <Image
-        src="/images/avatar-music.png"
-        alt="Aluuna"
+        src={src}
+        alt={alt}
         width={800}
         height={800}
         style={{ objectFit: 'contain' }}
@@ -69,6 +72,8 @@ function ContentAvatar() {
   function handleMouseLeave() {
     setTilt({ x: 0, y: 0 })
   }
+  
+  const { src, alt } = images[1];
 
   return (
     <div
@@ -90,8 +95,8 @@ function ContentAvatar() {
           style={{ boxShadow: '4px 8px 24px rgba(0,0,0,0.18)' }}
         >
           <Image
-            src="/images/avatar-content.png"
-            alt="Alan Luu"
+            src={src}
+            alt={alt}
             width={320}
             height={320}
             style={{ objectFit: 'cover', display: 'block' }}

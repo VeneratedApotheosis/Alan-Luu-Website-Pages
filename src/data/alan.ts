@@ -1,3 +1,5 @@
+import { appendBasePath } from '@/utils/paths';
+
 export const profile = {
   name: 'Alan Luu',
   tagline: {
@@ -43,12 +45,13 @@ export const videos = [
   },
 ]
 
-export const tracks = [
+
+const rawTracks = [
   {
     id: 1,
     title: 'Aero Era',
     description: 'Single · 2026',
-    src: '/music/AeroEra.mp3', // put mp3s in /public/music/
+    src: '/music/AeroEra.mp3',
   },
   {
     id: 2,
@@ -62,4 +65,26 @@ export const tracks = [
     description: 'EP Title · 2023',
     src: '/music/track-three.mp3',
   },
-]
+];
+
+const rawImages = [
+  {
+    src: "/images/avatar-music.png",
+    alt: "Aluuna"
+  },
+  {
+    src: "/images/avatar-content.png",
+    alt: "Alan Luu"
+  }
+];
+
+// Export mapped arrays with prepended base paths
+export const tracks = rawTracks.map(track => ({
+  ...track,
+  src: appendBasePath(track.src)
+}));
+
+export const images = rawImages.map(image => ({
+  ...image,
+  src: appendBasePath(image.src)
+}));
