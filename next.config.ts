@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  basePath: "/Alan-Luu-Website-Pages",
+  output: "export",
   reactCompiler: true,
 };
 
