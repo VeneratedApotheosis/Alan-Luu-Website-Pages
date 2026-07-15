@@ -37,8 +37,8 @@ function MusicAvatar() {
       <Image
         src="/images/avatar-music.png"
         alt="Aluuna"
-        width={600}
-        height={600}
+        width={800}
+        height={800}
         style={{ objectFit: 'contain' }}
         priority
       />
