@@ -15,7 +15,10 @@ export default function Navbar({ isMusicMode, onToggle, activeSection, onSection
   return (
     <nav
       className="absolute bottom-0 left-0 right-0 h-24 flex items-center px-8 gap-4"
-      style={{ background: panel, borderTop: `1px solid ${muted}44` }}
+      style={{ 
+        background: panel, 
+        borderTop: `1px solid ${muted}44`, 
+        transition: 'background-color 0.8s ease 400ms, border-color 0.8s ease 400ms', }}
     >
       {/* Toggle — bottom left */}
       <button

@@ -8,34 +8,62 @@ type Props = {
   isMusicMode: boolean
 }
 
+const EXIT_DURATION = 900 // ms — must match/exceed the exit transition durations below
+
 export default function Avatar({ isMusicMode }: Props) {
+  // renderMode lags behind isMusicMode so the old avatar can finish its exit animation
+  const [renderMode, setRenderMode] = useState<'music' | 'content'>(isMusicMode ? 'music' : 'content')
+  const [exiting, setExiting] = useState(false)
+
+  useEffect(() => {
+    const target = isMusicMode ? 'music' : 'content'
+    if (target === renderMode) return
+
+    setExiting(true)
+    const timer = setTimeout(() => {
+      setRenderMode(target)
+      setExiting(false)
+    }, EXIT_DURATION)
+
+    return () => clearTimeout(timer)
+  }, [isMusicMode, renderMode])
+
   return (
     <div className="absolute top-0 right-0 w-[45%] h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden">
-      {isMusicMode ? <MusicAvatar /> : <ContentAvatar />}
+      {renderMode === 'music' ? (
+        <MusicAvatar exiting={exiting} />
+      ) : (
+        <ContentAvatar exiting={exiting} />
+      )}
     </div>
   )
 }
 
-// ── Music side: drops down from the top ──────────────────
-function MusicAvatar() {
+// ── Music side: drops down from the top, reels back up on exit ──────
+function MusicAvatar({ exiting }: { exiting: boolean }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    // small delay so the animation is noticeable on mount
+    // small delay so the entrance animation is noticeable on mount
     const timer = setTimeout(() => setVisible(true), 50)
     return () => clearTimeout(timer)
   }, [])
 
   const { src, alt } = images[0];
 
+  // "up" state covers both: not-yet-entered, and reeling away on exit
+  const isUp = !visible || exiting
+
   return (
     <div
-        className="transition-all duration-700 ease-out"
-        style={{
-            transform: visible ? 'translateY(0)' : 'translateY(-110%)',
-            opacity: visible ? 1 : 0,
-            transition: 'transform 0.7s ease-out, opacity 0.7s ease-out',
-        }}
+      className="relative"
+      style={{
+        transform: isUp ? 'translateY(-115%)' : 'translateY(0)',
+        opacity: isUp ? 0 : 1,
+        transition: exiting
+          ? 'transform 0.8s cubic-bezier(0.55, 0, 0.85, 0.35), opacity 0.7s ease-in'
+          : 'transform 0.7s ease-out, opacity 0.7s ease-out',
+      }}
     >
       <Image
         src={src}
@@ -49,7 +77,7 @@ function MusicAvatar() {
         className="absolute bottom-6 right-4 px-4 py-1.5 rounded-full text-base whitespace-nowrap"
         style={{
           backgroundColor: 'var(--panel-music)',
-          color: 'var(--text-music)',
+          color: 'var(--muted-music)',
           border: '1px solid var(--muted-music)44',
         }}
       >
@@ -59,10 +87,17 @@ function MusicAvatar() {
   )
 }
 
-// ── Content side: polaroid that tilts toward mouse ───────
-function ContentAvatar() {
+// ── Content side: polaroid that tilts toward mouse, shrinks off-side on exit ──
+function ContentAvatar({ exiting }: { exiting: boolean }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
+  const [visible, setVisible] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // small delay so the entrance animation is noticeable on mount
+    const timer = setTimeout(() => setVisible(true), 50)
+    return () => clearTimeout(timer)
+  }, [])
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const el = containerRef.current
@@ -82,8 +117,19 @@ function ContentAvatar() {
   function handleMouseLeave() {
     setTilt({ x: 0, y: 0 })
   }
-  
+
   const { src, alt } = images[1];
+
+  let transform: string
+  if (exiting) {
+    transform = 'scale(0.25) translateX(110px) rotate(12deg)'
+  } else if (!visible) {
+    transform = 'scale(0.55) translateY(-50px) rotate(-10deg)'
+  } else {
+    transform = 'scale(1) translateX(0) rotate(0deg)'
+  }
+
+  const hidden = exiting || !visible
 
   return (
     <div
@@ -91,7 +137,14 @@ function ContentAvatar() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="cursor-pointer"
-      style={{ perspective: '800px' }}
+      style={{
+        perspective: '800px',
+        transform,
+        opacity: hidden ? 0 : 1,
+        transition: exiting
+          ? 'transform 0.75s ease-in, opacity 0.65s ease-in'
+          : 'transform 0.6s ease-out, opacity 0.6s ease-out',
+      }}
     >
       <div
         className="transition-transform duration-200 ease-out"

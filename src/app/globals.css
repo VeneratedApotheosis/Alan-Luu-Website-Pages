@@ -25,3 +25,18 @@ body {
 *, *::before, *::after {
   transition: background-color var(--transition), color var(--transition), border-color var(--transition);
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-fade {
+  animation: fadeIn 0.5s ease 400ms both;
+}

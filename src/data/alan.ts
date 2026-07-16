@@ -73,9 +73,9 @@ const rawTracks = [
   },
   {
     id: 3,
-    title: 'Track Three',
-    description: 'EP Title · 2023',
-    src: '/music/track-three.mp3',
+    title: 'i see me',
+    description: 'Single · 2026',
+    src: '/music/iseeme.mp3',
   },
 ];
 

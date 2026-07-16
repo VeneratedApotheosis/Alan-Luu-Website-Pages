@@ -24,7 +24,7 @@ export default function ContentPanel({ isMusicMode, activeSection }: Props) {
         {isMusicMode ? profile.tagline.music : profile.tagline.content}
       </p>
 
-      <div className="mt-4 flex flex-col gap-4">
+      <div key={activeSection} className="mt-4 flex flex-col gap-4 section-fade">
 
         {activeSection === 'about' && (
           <p className="text-xl opacity-70 leading-relaxed max-w-xl">

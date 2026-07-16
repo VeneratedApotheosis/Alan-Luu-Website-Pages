@@ -17,7 +17,7 @@ export default function Home() {
       style={{
         backgroundColor: isMusicMode ? 'var(--bg-music)' : 'var(--bg-content)',
         color: isMusicMode ? 'var(--text-music)' : 'var(--text-content)',
-        transition: 'background-color 0.8s ease, color 0.6s ease',
+        transition: 'background-color 0.8s ease 400ms, color 0.8s ease 400ms',
       }}
     >
       <ContentPanel isMusicMode={isMusicMode} activeSection={activeSection} />
