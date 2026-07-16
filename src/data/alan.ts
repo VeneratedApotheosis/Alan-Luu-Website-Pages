@@ -6,19 +6,26 @@ export const profile = {
     content: 'Content Creator',
     music: 'Artist',
   },
-  about: `insert stuff about alan yay`,
+  about: `Hello everyone! My name is Alan, and I’m a music producer and content creator.
+
+I’ve been in love with creative work for over a decade now, and I don’t plan to stop anytime soon! It first began with learning to edit Valorant and Minecraft gameplay videos for YouTube. Then, 2021 marked the year I discovered FL Studio and the world of music production. Ever since starting these two hobbies, my life has changed entirely, and I hope to change the lives of others following me!
+`,
   contact: 'email',
 }
 
 export const contentLinks = [
   { label: 'YouTube',   url: 'https://www.youtube.com/@alanluuu' },
   { label: 'Instagram', url: 'https://www.instagram.com/alanluuu_/' },
-  { label: 'Other Platform idk',    url: 'https://tiktok.com/@yourusername' },
+  { label: 'TikTok',    url: 'https://www.tiktok.com/@aluuna__' },
 ]
 
 export const musicLinks = [
+  { label: 'YouTube', url: 'https://www.youtube.com/@Aluunamusic' },
+  { label: 'Instagram', url: 'https://www.instagram.com/aluunamusic/' },
   { label: 'Spotify',     url: 'https://open.spotify.com/artist/4MhAs6owaq7efiDkymW7Rs?si=j_iLAEFQSW-bL_oUeNPDgg' },
-  { label: 'Apple Music', url: 'https://music.apple.com/artist/id' },
+  { label: 'Apple Music', url: 'https://music.apple.com/us/artist/aluuna/1840067621' },
+  { label: 'Kofi', url: 'https://ko-fi.com/alanluu' },
+  { label: 'Bandcamp', url: 'https://aluuna.bandcamp.com' },
 ]
 
 export const videos = [
