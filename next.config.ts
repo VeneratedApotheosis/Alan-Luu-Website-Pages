@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
+import { appendBasePath } from '@/utils/paths';
 
 const nextConfig: NextConfig = {
-  basePath: "/Alan-Luu-Website-Pages",
+  basePath: appendBasePath("/Alan-Luu-Website-Pages"),
   output: "export",
   reactCompiler: true,
   images: {
