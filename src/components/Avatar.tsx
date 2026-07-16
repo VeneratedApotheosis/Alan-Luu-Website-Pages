@@ -45,6 +45,16 @@ function MusicAvatar() {
         style={{ objectFit: 'contain' }}
         priority
       />
+      <span
+        className="absolute bottom-6 right-4 px-4 py-1.5 rounded-full text-base whitespace-nowrap"
+        style={{
+          backgroundColor: 'var(--panel-music)',
+          color: 'var(--text-music)',
+          border: '1px solid var(--muted-music)44',
+        }}
+      >
+        Art by @megshrooom
+      </span>
     </div>
   )
 }

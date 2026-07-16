@@ -20,14 +20,16 @@ export default function ContentPanel({ isMusicMode, activeSection }: Props) {
       {isMusicMode ? (<>ALUUNA</>) : (<>ALAN LUU</>)}
     </h1>
 
-      <p className="text-sm opacity-60">
+      <p className="text-xl opacity-60">
         {isMusicMode ? profile.tagline.music : profile.tagline.content}
       </p>
 
       <div className="mt-4 flex flex-col gap-4">
 
         {activeSection === 'about' && (
-          <p className="opacity-70 leading-relaxed max-w-md">{profile.about}</p>
+          <p className="text-xl opacity-70 leading-relaxed max-w-xl">
+            {isMusicMode ? profile.aboutMusic : profile.about}
+          </p>
         )}
 
         {activeSection === 'works' && !isMusicMode && <VideoList />}

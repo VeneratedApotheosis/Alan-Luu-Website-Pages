@@ -57,7 +57,7 @@ export default function TrackItem({
         </button>
 
         <div className="flex-1">
-          <p className="font-semibold text-sm" style={{ color: 'var(--text-music)' }}>
+          <p className="font-semibold text-base" style={{ color: 'var(--text-music)' }}>
             {track.title}
           </p>
           <p className="text-xs mt-1" style={{ color: 'var(--muted-music)' }}>

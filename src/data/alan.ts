@@ -10,6 +10,11 @@ export const profile = {
 
 I’ve been in love with creative work for over a decade now, and I don’t plan to stop anytime soon! It first began with learning to edit Valorant and Minecraft gameplay videos for YouTube. Then, 2021 marked the year I discovered FL Studio and the world of music production. Ever since starting these two hobbies, my life has changed entirely, and I hope to change the lives of others following me!
 `,
+  aboutMusic: `Welcome to my latest project: Beyond These Borders
+
+Beyond These Borders is Aluuna’s debut EP, consisting of 6 songs. This EP is my journey through becoming a creator in the space, represented by my character Aegle (the fish you see on screen now)! Aegle is an Angler Fish that lives in an underwater city as a mechanic/engineer. The EP parallels my entrance into the world of art through his mission of breaking through what’s called the “water barrier.” I hope you enjoy the EP and follow me beyond these borders!
+
+`,
   contact: 'email',
 }
 
@@ -31,23 +36,23 @@ export const musicLinks = [
 export const videos = [
   {
     id: 1,
-    title: 'Video Title One',
-    description: 'Short description of the video.',
-    url: 'https://youtube.com/watch?v=VIDEO_ID',
+    title: 'how i made someones proposal song',
+    description: 'The making of Ringo Tsuga’s proposal music',
+    url: 'https://youtu.be/EDRd3Awh5N8?si=th6gIK-ZhKIZVenN',
     thumbnail: null, // add a URL or local path later
   },
   {
     id: 2,
-    title: 'Video Title Two',
-    description: 'Short description of the video.',
-    url: 'https://youtube.com/watch?v=VIDEO_ID',
+    title: 'The Beauty of the YouTube Animation Community',
+    description: 'A video essay on what makes the Animation Community so great',
+    url: 'https://youtu.be/uJK_2Ui5uks?si=CB81njdhSSKyqjp6',
     thumbnail: null,
   },
   {
     id: 3,
-    title: 'Video Title Three',
-    description: 'Short description of the video.',
-    url: 'https://youtube.com/watch?v=VIDEO_ID',
+    title: 'Come watch my first video too',
+    description: 'A quick introduction to me as a person',
+    url: 'https://youtu.be/PBsOG7EAaXI?si=9xkCHR9YZGGTa3Eh',
     thumbnail: null,
   },
 ]

@@ -48,6 +48,16 @@ export default function Navbar({ isMusicMode, onToggle, activeSection, onSection
         accent={accent}
         onClick={() => onSectionChange('links')}
       />
+      <a href="mailto:luua103232@gmail.com"
+        className="h-12 px-5 rounded-full text-base font-medium tracking-wide transition-all duration-300 flex items-center ml-auto whitespace-nowrap"
+        style={{
+          border: `1px solid ${accent}`,
+          color: accent,
+          backgroundColor: 'transparent',
+        }}
+      >
+        luua103232@gmail.com
+      </a>
     </nav>
   )
 }

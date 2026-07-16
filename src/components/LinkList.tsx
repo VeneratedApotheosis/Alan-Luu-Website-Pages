@@ -31,8 +31,8 @@ export default function LinkList({ links }: Props) {
             color: hoveredLabel === link.label ? 'var(--accent-content)' : 'inherit',
           }}
         >
-          <span className="font-medium text-sm">{link.label}</span>
-          <span className="text-xs opacity-40">↗</span>
+          <span className="font-medium text-lg">{link.label}</span>
+          <span className="text-lg opacity-40">↗</span>
         </a>
       ))}
     </div>
