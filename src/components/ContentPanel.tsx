@@ -17,7 +17,7 @@ export default function ContentPanel({ isMusicMode, activeSection }: Props) {
     <div className="absolute top-0 left-0 w-[55%] h-[calc(100vh-96px)] p-12 flex flex-col gap-6 overflow-y-auto">
 
     <h1 className="text-8xl font-bold leading-none tracking-tight">
-      {isMusicMode ? (<>ALUUNA</>) : (<>ALAN<br />LUU</>)}
+      {isMusicMode ? (<>ALUUNA</>) : (<>ALAN LUU</>)}
     </h1>
 
       <p className="text-sm opacity-60">
