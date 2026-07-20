@@ -35,8 +35,11 @@ export default function ContentPanel({ isMusicMode, activeSection }: Props) {
         {activeSection === 'works' && !isMusicMode && <VideoList />}
         {activeSection === 'works' && isMusicMode && <TrackList />}
 
-        {activeSection === 'links' && !isMusicMode && <LinkList links={contentLinks} />}
-        {activeSection === 'links' && isMusicMode && <LinkList links={musicLinks} />}
+        {activeSection === 'links' && (<LinkList
+           links={isMusicMode ? musicLinks : contentLinks}
+            isMusicMode={isMusicMode}
+          />
+        )}
 
       </div>
     </div>

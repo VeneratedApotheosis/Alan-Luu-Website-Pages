@@ -9,9 +9,10 @@ type Link = {
 
 type Props = {
   links: Link[]
+  isMusicMode: boolean
 }
 
-export default function LinkList({ links }: Props) {
+export default function LinkList({ links, isMusicMode }: Props) {
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null)
 
   return (
@@ -27,8 +28,16 @@ export default function LinkList({ links }: Props) {
           className="flex items-center justify-between p-4 rounded-xl transition-all duration-300"
           style={{
             border: '1px solid var(--muted-content)44',
-            backgroundColor: hoveredLabel === link.label ? 'var(--accent-content-dim)' : 'transparent',
-            color: hoveredLabel === link.label ? 'var(--accent-content)' : 'inherit',
+            backgroundColor: hoveredLabel === link.label 
+              ? isMusicMode
+                ? 'var(--accent-music-dim)' 
+                : 'var(--accent-content-dim)'
+              : 'transparent',
+            color: hoveredLabel === link.label 
+              ? isMusicMode
+                ? 'var(--accent-music)' 
+                : 'var(--accent-content)'
+              : 'inherit',
           }}
         >
           <span className="font-medium text-lg">{link.label}</span>

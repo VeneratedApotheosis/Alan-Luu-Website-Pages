@@ -8,7 +8,7 @@ type Props = {
   isMusicMode: boolean
 }
 
-const EXIT_DURATION = 900 // ms — must match/exceed the exit transition durations below
+const EXIT_DURATION = 900 
 
 export default function Avatar({ isMusicMode }: Props) {
   // renderMode lags behind isMusicMode so the old avatar can finish its exit animation
@@ -44,7 +44,7 @@ function MusicAvatar({ exiting }: { exiting: boolean }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    // small delay so the entrance animation is noticeable on mount
+    // small delay 
     const timer = setTimeout(() => setVisible(true), 50)
     return () => clearTimeout(timer)
   }, [])
@@ -94,11 +94,12 @@ function ContentAvatar({ exiting }: { exiting: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // small delay so the entrance animation is noticeable on mount
+    // small delay 
     const timer = setTimeout(() => setVisible(true), 50)
     return () => clearTimeout(timer)
   }, [])
 
+  // make polaroid interactive
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const el = containerRef.current
     if (!el) return
@@ -160,8 +161,8 @@ function ContentAvatar({ exiting }: { exiting: boolean }) {
           <Image
             src={src}
             alt={alt}
-            width={320}
-            height={320}
+            width={400}
+            height={400}
             style={{ objectFit: 'cover', display: 'block' }}
             priority
           />
