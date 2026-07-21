@@ -7,13 +7,15 @@
   --muted-content:      #888888;
   --accent-content:     #2563EB;
   --accent-content-dim: rgba(37, 99, 235, 0.12);
+  --on-accent-content:  #FFFFFF;
 
-  --bg-music:           #15478d;
-  --panel-music:        #092e54;
-  --text-music:         #C8E6FF;
-  --muted-music:        #4A7FA5;
-  --accent-music:       #42a7eb;
-  --accent-music-dim:   rgba(88, 146, 184, 0.2);
+  --bg-music:           #123B6B;
+  --panel-music:        #082542;
+  --text-music:         #EAF6FF;
+  --muted-music:        #7FB3D9;
+  --accent-music:       #22D3EE;
+  --accent-music-dim:   rgba(34, 211, 238, 0.16);
+  --on-accent-music:    #06283D;
 
   --transition: 0.6s ease;
 }
