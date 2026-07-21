@@ -9,17 +9,20 @@ export default function VideoList() {
           href={video.url}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center gap-4 p-4 rounded-xl border border-[#2563EB22] hover:border-[#2563EB] transition-all duration-300 group"
-          style={{ backgroundColor: 'var(--panel-content)' }}
+          className="flex items-center gap-4 p-4 rounded-xl border border-[#2563EB22] hover:border-[#2563EB] transition-colors duration-300 group"
+          style={{
+            backgroundColor: 'var(--panel-content)',
+            transition: 'background-color 0.8s ease 400ms, border-color 0.3s ease',
+          }}
         >
-          <div className="w-20 h-14 rounded-lg bg-gray-300 flex items-center justify-center shrink-0 text-gray-500 text-lg">
+          <div className="w-20 h-14 rounded-lg bg-gray-300 flex items-center justify-center shrink-0 text-gray-500 text-xl">
             🎬
           </div>
           <div>
-            <p className="font-semibold text-lg group-hover:text-[#2563EB] transition-colors">
+            <p className="font-semibold text-xl group-hover:text-[#2563EB] transition-colors">
               {video.title}
             </p>
-            <p className="text-base opacity-50 mt-1">{video.description}</p>
+            <p className="text-lg opacity-50 mt-1">{video.description}</p>
           </div>
         </a>
       ))}

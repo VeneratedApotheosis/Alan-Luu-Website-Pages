@@ -37,40 +37,49 @@ export default function TrackItem({
 
   return (
     <div
-      className="flex flex-col gap-3 p-4 rounded-xl border transition-all duration-300"
+      className="flex flex-col gap-3 p-4 rounded-xl border"
       style={{
         backgroundColor: 'var(--panel-music)',
         borderColor: isExpanded ? 'var(--accent-music)' : 'var(--muted-music)44',
+        transition: 'background-color 0.8s ease 400ms, border-color 0.8s ease 400ms',
       }}
     >
       {/* Top row */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => onPlay(track)}
-          className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300"
+          className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
           style={{
             backgroundColor: isPlaying ? 'var(--accent-music)' : 'var(--muted-music)44',
             color: 'var(--text-music)',
+            transition: 'background-color 0.8s ease 400ms, color 0.8s ease 400ms',
           }}
         >
           {isPlaying ? '⏸' : '▶'}
         </button>
 
         <div className="flex-1">
-          <p className="font-semibold text-base" style={{ color: 'var(--text-music)' }}>
+          <p
+            className="font-semibold text-xl"
+            style={{ color: 'var(--text-music)', transition: 'color 0.8s ease 400ms' }}
+          >
             {track.title}
           </p>
-          <p className="text-xs mt-1" style={{ color: 'var(--muted-music)' }}>
+          <p
+            className="text-lg mt-1"
+            style={{ color: 'var(--muted-music)', transition: 'color 0.8s ease 400ms' }}
+          >
             {track.description}
           </p>
         </div>
 
         <button
           onClick={() => onToggleExpand(track.id)}
-          className="w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300 text-xs"
+          className="w-7 h-7 flex items-center justify-center rounded-full text-lg"
           style={{
             color: isExpanded ? 'var(--accent-music)' : 'var(--muted-music)',
             backgroundColor: isExpanded ? 'var(--accent-music-dim)' : 'transparent',
+            transition: 'background-color 0.8s ease 400ms, color 0.8s ease 400ms',
           }}
           aria-label={isExpanded ? 'Collapse' : 'Expand'}
         >
@@ -84,13 +93,14 @@ export default function TrackItem({
           <div className="relative w-full h-5 flex items-center">
             <div
               className="absolute w-full h-[2px] rounded-full"
-              style={{ backgroundColor: 'var(--muted-music)' }}
+              style={{ backgroundColor: 'var(--muted-music)', transition: 'background-color 0.8s ease 400ms' }}
             />
             <div
               className="absolute h-[2px] rounded-full"
               style={{
                 width: `${progress}%`,
                 backgroundColor: 'var(--accent-music)',
+                transition: 'background-color 0.8s ease 400ms',
               }}
             />
             <div
@@ -98,6 +108,7 @@ export default function TrackItem({
               style={{
                 left: `calc(${progress}% - 6px)`,
                 backgroundColor: 'var(--accent-music)',
+                transition: 'background-color 0.8s ease 400ms',
               }}
             />
             <input
@@ -111,7 +122,10 @@ export default function TrackItem({
             />
           </div>
 
-          <div className="flex justify-between text-xs" style={{ color: 'var(--muted-music)' }}>
+          <div
+            className="flex justify-between text-sm"
+            style={{ color: 'var(--muted-music)', transition: 'color 0.8s ease 400ms' }}
+          >
             <span>{formatTime(trackAudio?.currentTime || 0)}</span>
             <span>{formatTime(trackAudio?.duration || 0)}</span>
           </div>

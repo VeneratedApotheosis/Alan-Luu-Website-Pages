@@ -16,15 +16,15 @@ export default function ContentPanel({ isMusicMode, activeSection }: Props) {
   return (
     <div className="absolute top-0 left-0 w-[55%] h-[calc(100vh-96px)] p-12 flex flex-col gap-6 overflow-y-auto">
 
-    <h1 className="text-8xl font-bold leading-none tracking-tight">
+    <h1 key={isMusicMode ? 'music' : 'content'} className="text-8xl font-bold leading-none tracking-tight section-fade">
       {isMusicMode ? (<>ALUUNA</>) : (<>ALAN LUU</>)}
     </h1>
 
-      <p className="text-xl opacity-60">
+      <p key={isMusicMode ? 'music-tagline' : 'content-tagline'} className="text-xl opacity-60 section-fade">
         {isMusicMode ? profile.tagline.music : profile.tagline.content}
       </p>
 
-      <div key={activeSection} className="mt-4 flex flex-col gap-4 section-fade">
+      <div key={`${activeSection}-${isMusicMode}`} className="mt-4 flex flex-col gap-4 section-fade">
 
         {activeSection === 'about' && (
           <p className="text-xl opacity-70 leading-relaxed max-w-xl">
