@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { tracks } from '@/data/alan'
 import TrackItem from './TrackItem' // Adjust path if necessary
 
@@ -15,6 +15,13 @@ export default function TrackList() {
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [audioState, setAudioState] = useState<AudioState | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  // TrackList unmounts whenever the user leaves the Works tab, or toggles out of music mode
+  useEffect(() => {
+    return () => {
+      audioRef.current?.pause()
+    }
+  }, [])
 
   function handlePlay(track: typeof tracks[0]) {
     if (playingId === track.id) {

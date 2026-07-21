@@ -51,7 +51,7 @@ export default function TrackItem({
           className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
           style={{
             backgroundColor: isPlaying ? 'var(--accent-music)' : 'var(--muted-music)44',
-            color: 'var(--text-music)',
+            color: isPlaying ? 'var(--on-accent-music)' : 'var(--text-music)',
             transition: 'background-color 0.8s ease 400ms, color 0.8s ease 400ms',
           }}
         >
