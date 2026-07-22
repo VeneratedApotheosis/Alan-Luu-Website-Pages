@@ -92,3 +92,12 @@ body {
 .backdrop-fade-exit {
   animation: backdropFade 0.2s ease reverse both;
 }
+
+@keyframes badgeBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.badge-bob {
+  animation: badgeBob 3.2s ease-in-out infinite;
+}

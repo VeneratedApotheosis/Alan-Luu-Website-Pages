@@ -29,11 +29,11 @@ export default function Avatar({ isMusicMode, isMobile }: Props) {
   }, [isMusicMode, renderMode])
 
   const wrapperClass = isMobile
-    ? 'relative w-full flex items-center justify-center overflow-hidden shrink-0'
+    ? 'relative w-full flex items-center justify-center shrink-0'
     : 'absolute top-0 right-0 w-[45%] h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden'
 
   return (
-    <div className={wrapperClass} style={isMobile ? { minHeight: 380 } : undefined}>
+    <div className={wrapperClass} style={isMobile ? { minHeight: 340 } : undefined}>
       {renderMode === 'music' ? (
         <MusicAvatar exiting={exiting} isMobile={isMobile} />
       ) : (
@@ -43,6 +43,7 @@ export default function Avatar({ isMusicMode, isMobile }: Props) {
   )
 }
 
+// ── Music side: drops down from the top, reels back up on exit ──────
 function MusicAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolean }) {
   const [visible, setVisible] = useState(false)
 
@@ -52,19 +53,22 @@ function MusicAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolea
   }, [])
 
   const { src, alt } = images[0];
-  const size = isMobile ? 420 : 800
-
+  const size = isMobile ? 380 : 800
   const isUp = !visible || exiting
 
   return (
     <div
-      className="relative"
       style={{
         transform: isUp ? 'translateY(-115%)' : 'translateY(0)',
         opacity: isUp ? 0 : 1,
         transition: exiting
           ? 'transform 0.8s cubic-bezier(0.55, 0, 0.85, 0.35), opacity 0.7s ease-in'
           : 'transform 0.7s ease-out, opacity 0.7s ease-out',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        gap: isMobile ? 8 : 14,
+        width: isMobile ? 'min(78vw, 380px)' : 'min(100%, 800px, 68vh)',
       }}
     >
       <Image
@@ -72,15 +76,20 @@ function MusicAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolea
         alt={alt}
         width={size}
         height={size}
-        style={{ objectFit: 'contain' }}
+        style={{
+          objectFit: 'contain',
+          width: '100%',
+          height: 'auto',
+        }}
         priority
       />
       <span
-        className="absolute bottom-6 right-4 px-4 py-1.5 rounded-full text-base whitespace-nowrap"
+        className={`badge-bob rounded-full whitespace-nowrap mr-1 ${isMobile ? 'px-3 py-1 text-sm' : 'px-4 py-1.5 text-base'}`}
         style={{
-          backgroundColor: 'var(--panel-music)',
-          color: 'var(--muted-music)',
-          border: '1px solid var(--muted-music)44',
+          backgroundColor: 'var(--menu-bg-music)',
+          color: 'var(--accent-music)',
+          border: '1px solid var(--accent-music)55',
+          boxShadow: '0 0 12px rgba(34, 211, 238, 0.25)',
         }}
       >
         Art by @megshrooom
@@ -89,6 +98,7 @@ function MusicAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolea
   )
 }
 
+// ── Content side: polaroid that tilts toward mouse, shrinks off-side on exit ──
 function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolean }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [visible, setVisible] = useState(false)
@@ -142,6 +152,7 @@ function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: bool
         transition: exiting
           ? 'transform 0.75s ease-in, opacity 0.65s ease-in'
           : 'transform 0.6s ease-out, opacity 0.6s ease-out',
+        width: isMobile ? 'min(80vw, 380px)' : 'min(100%, 460px, 66vh)',
       }}
     >
       <div
@@ -150,6 +161,7 @@ function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: bool
           transform: `rotateX(${-tilt.x}deg) rotateY(${tilt.y}deg) rotate(-3deg)`,
         }}
       >
+        {/* Polaroid frame */}
         <div
           className="bg-white p-3 pb-10 shadow-2xl"
           style={{ boxShadow: '4px 8px 24px rgba(0,0,0,0.18)' }}
@@ -159,7 +171,12 @@ function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: bool
             alt={alt}
             width={size}
             height={size}
-            style={{ objectFit: 'cover', display: 'block' }}
+            style={{
+              objectFit: 'cover',
+              display: 'block',
+              width: '100%',
+              height: 'auto',
+            }}
             priority
           />
         </div>
