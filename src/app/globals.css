@@ -17,6 +17,9 @@
   --accent-music-dim:   rgba(34, 211, 238, 0.16);
   --on-accent-music:    #06283D;
 
+  --menu-bg-content:    #FFFFFF;
+  --menu-bg-music:      #0C3A4A;
+
   --transition: 0.6s ease;
 }
 
@@ -40,5 +43,52 @@ body {
 }
 
 .section-fade {
-  animation: fadeIn 0.5s ease 400ms both;
+  animation: fadeIn 0.8s ease 400ms both;
+}
+
+@keyframes menuPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes menuPopOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+}
+
+.menu-pop-enter {
+  animation: menuPopIn 0.28s ease both;
+}
+
+.menu-pop-exit {
+  animation: menuPopOut 0.22s ease both;
+}
+
+.menu-item-fade {
+  animation: fadeIn 0.35s ease both;
+}
+
+@keyframes backdropFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.backdrop-fade-enter {
+  animation: backdropFade 0.22s ease both;
+}
+
+.backdrop-fade-exit {
+  animation: backdropFade 0.2s ease reverse both;
 }

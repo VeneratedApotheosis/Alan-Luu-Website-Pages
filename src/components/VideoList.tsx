@@ -19,10 +19,15 @@ export default function VideoList() {
             🎬
           </div>
           <div>
-            <p className="font-semibold text-xl group-hover:text-[#2563EB] transition-colors">
+            <p
+              className="font-semibold text-xl group-hover:text-[#2563EB] transition-colors"
+              style={{ color: 'var(--text-content)' }}
+            >
               {video.title}
             </p>
-            <p className="text-lg opacity-50 mt-1">{video.description}</p>
+            <p className="text-lg opacity-50 mt-1" style={{ color: 'var(--text-content)' }}>
+              {video.description}
+            </p>
           </div>
         </a>
       ))}

@@ -6,12 +6,12 @@ import { images } from '@/data/alan'
 
 type Props = {
   isMusicMode: boolean
+  isMobile: boolean
 }
 
-const EXIT_DURATION = 900 
+const EXIT_DURATION = 900
 
-export default function Avatar({ isMusicMode }: Props) {
-  // renderMode lags behind isMusicMode so the old avatar can finish its exit animation
+export default function Avatar({ isMusicMode, isMobile }: Props) {
   const [renderMode, setRenderMode] = useState<'music' | 'content'>(isMusicMode ? 'music' : 'content')
   const [exiting, setExiting] = useState(false)
 
@@ -28,30 +28,32 @@ export default function Avatar({ isMusicMode }: Props) {
     return () => clearTimeout(timer)
   }, [isMusicMode, renderMode])
 
+  const wrapperClass = isMobile
+    ? 'relative w-full flex items-center justify-center overflow-hidden shrink-0'
+    : 'absolute top-0 right-0 w-[45%] h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden'
+
   return (
-    <div className="absolute top-0 right-0 w-[45%] h-[calc(100vh-96px)] flex items-center justify-center overflow-hidden">
+    <div className={wrapperClass} style={isMobile ? { minHeight: 380 } : undefined}>
       {renderMode === 'music' ? (
-        <MusicAvatar exiting={exiting} />
+        <MusicAvatar exiting={exiting} isMobile={isMobile} />
       ) : (
-        <ContentAvatar exiting={exiting} />
+        <ContentAvatar exiting={exiting} isMobile={isMobile} />
       )}
     </div>
   )
 }
 
-// ── Music side: drops down from the top, reels back up on exit ──────
-function MusicAvatar({ exiting }: { exiting: boolean }) {
+function MusicAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolean }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    // small delay 
     const timer = setTimeout(() => setVisible(true), 50)
     return () => clearTimeout(timer)
   }, [])
 
   const { src, alt } = images[0];
+  const size = isMobile ? 420 : 800
 
-  // "up" state covers both: not-yet-entered, and reeling away on exit
   const isUp = !visible || exiting
 
   return (
@@ -68,8 +70,8 @@ function MusicAvatar({ exiting }: { exiting: boolean }) {
       <Image
         src={src}
         alt={alt}
-        width={800}
-        height={800}
+        width={size}
+        height={size}
         style={{ objectFit: 'contain' }}
         priority
       />
@@ -87,31 +89,25 @@ function MusicAvatar({ exiting }: { exiting: boolean }) {
   )
 }
 
-// ── Content side: polaroid that tilts toward mouse, shrinks off-side on exit ──
-function ContentAvatar({ exiting }: { exiting: boolean }) {
+function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolean }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [visible, setVisible] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // small delay 
     const timer = setTimeout(() => setVisible(true), 50)
     return () => clearTimeout(timer)
   }, [])
 
-  // make polaroid interactive
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const el = containerRef.current
     if (!el) return
 
     const rect = el.getBoundingClientRect()
-
-    // mouse position relative to center of the element, from -1 to 1
     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2
     const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2
 
-    // max tilt in degrees
-    const maxTilt = 10
+    const maxTilt = isMobile ? 0 : 10
     setTilt({ x: y * maxTilt, y: x * maxTilt })
   }
 
@@ -120,6 +116,7 @@ function ContentAvatar({ exiting }: { exiting: boolean }) {
   }
 
   const { src, alt } = images[1];
+  const size = isMobile ? 340 : 400
 
   let transform: string
   if (exiting) {
@@ -153,7 +150,6 @@ function ContentAvatar({ exiting }: { exiting: boolean }) {
           transform: `rotateX(${-tilt.x}deg) rotateY(${tilt.y}deg) rotate(-3deg)`,
         }}
       >
-        {/* Polaroid frame */}
         <div
           className="bg-white p-3 pb-10 shadow-2xl"
           style={{ boxShadow: '4px 8px 24px rgba(0,0,0,0.18)' }}
@@ -161,8 +157,8 @@ function ContentAvatar({ exiting }: { exiting: boolean }) {
           <Image
             src={src}
             alt={alt}
-            width={400}
-            height={400}
+            width={size}
+            height={size}
             style={{ objectFit: 'cover', display: 'block' }}
             priority
           />
