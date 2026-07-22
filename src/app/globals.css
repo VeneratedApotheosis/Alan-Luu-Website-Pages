@@ -9,7 +9,7 @@
   --accent-content-dim: rgba(37, 99, 235, 0.12);
   --on-accent-content:  #FFFFFF;
 
-  --bg-music:           #123B6B;
+  --bg-music:           #0f4c92;
   --panel-music:        #082542;
   --text-music:         #EAF6FF;
   --muted-music:        #7FB3D9;
@@ -18,7 +18,7 @@
   --on-accent-music:    #06283D;
 
   --menu-bg-content:    #FFFFFF;
-  --menu-bg-music:      #0C3A4A;
+  --menu-bg-music:      #011a32;
 
   --transition: 0.6s ease;
 }
