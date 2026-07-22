@@ -43,14 +43,76 @@ export default function Avatar({ isMusicMode, isMobile }: Props) {
   )
 }
 
+// Reads the pendulum's current rotation (in degrees) straight off the computed
+// transform matrix, for smooth settle
+function getCurrentRotationDeg(el: HTMLElement): number {
+  const transform = getComputedStyle(el).transform
+  if (!transform || transform === 'none') return 0
+  const match = transform.match(/matrix\(([^)]+)\)/)
+  if (!match) return 0
+  const [a, b] = match[1].split(',').map((v) => parseFloat(v))
+  return Math.atan2(b, a) * (180 / Math.PI)
+}
+
+// How long the pendulum swings before easing to a stop on a mobile tap
+const CLICK_SWING_DURATION = 700
+
 // ── Music side: drops down from the top, reels back up on exit ──────
 function MusicAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolean }) {
   const [visible, setVisible] = useState(false)
+  const [swinging, setSwinging] = useState(false)
+  const [settling, setSettling] = useState(false)
+  const pendulumRef = useRef<HTMLDivElement>(null)
+  const clickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 50)
     return () => clearTimeout(timer)
   }, [])
+
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
+    }
+  }, [])
+
+  function startSwinging() {
+    setSettling(false)
+    setSwinging(true)
+  }
+
+  // Captures the pendulum's live angle and hands it to the CSS settle
+  // animation, so it always eases down from its real current position.
+  function settleToStop() {
+    const el = pendulumRef.current
+    if (el) {
+      const angle = getCurrentRotationDeg(el)
+      el.style.setProperty('--settle-start', `${angle}deg`)
+    }
+    setSwinging(false)
+    setSettling(true)
+  }
+
+  function handlePendulumEnter() {
+    if (isMobile) return
+    startSwinging()
+  }
+
+  function handlePendulumLeave() {
+    if (isMobile) return
+    settleToStop()
+  }
+
+  function handlePendulumClick() {
+    if (!isMobile) return
+    if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
+    startSwinging()
+    clickTimeoutRef.current = setTimeout(settleToStop, CLICK_SWING_DURATION)
+  }
+
+  function handleSettleAnimationEnd(e: React.AnimationEvent<HTMLDivElement>) {
+    if (e.animationName === 'pendulumSettle') setSettling(false)
+  }
 
   const { src, alt } = images[0];
   const size = isMobile ? 380 : 800
@@ -71,22 +133,31 @@ function MusicAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolea
         width: isMobile ? 'min(78vw, 380px)' : 'min(100%, 800px, 68vh)',
       }}
     >
-      <Image
-        src={src}
-        alt={alt}
-        width={size}
-        height={size}
-        style={{
-          objectFit: 'contain',
-          width: '100%',
-          height: 'auto',
-        }}
-        priority
-      />
+      <div
+        ref={pendulumRef}
+        className={`pendulum-hover cursor-pointer ${swinging ? 'pendulum-swinging' : ''} ${settling ? 'pendulum-settling' : ''}`}
+        onMouseEnter={handlePendulumEnter}
+        onMouseLeave={handlePendulumLeave}
+        onClick={handlePendulumClick}
+        onAnimationEnd={handleSettleAnimationEnd}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          width={size}
+          height={size}
+          style={{
+            objectFit: 'contain',
+            width: '100%',
+            height: 'auto',
+          }}
+          priority
+        />
+      </div>
       <span
         className={`badge-bob rounded-full whitespace-nowrap mr-1 ${isMobile ? 'px-3 py-1 text-sm' : 'px-4 py-1.5 text-base'}`}
         style={{
-          backgroundColor: 'var(--menu-bg-music)',
+          backgroundColor: 'var(--panel-music)',
           color: 'var(--accent-music)',
           border: '1px solid var(--accent-music)55',
           boxShadow: '0 0 12px rgba(34, 211, 238, 0.25)',
@@ -98,10 +169,11 @@ function MusicAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolea
   )
 }
 
-// ── Content side: polaroid that tilts toward mouse, shrinks off-side on exit ──
+// ── Content side: polaroid that tilts toward mouse (desktop), shakes on tap (mobile) ──
 function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: boolean }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [visible, setVisible] = useState(false)
+  const [wobbling, setWobbling] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -110,6 +182,7 @@ function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: bool
   }, [])
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (isMobile) return
     const el = containerRef.current
     if (!el) return
 
@@ -117,12 +190,24 @@ function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: bool
     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2
     const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2
 
-    const maxTilt = isMobile ? 0 : 10
+    const maxTilt = 10
     setTilt({ x: y * maxTilt, y: x * maxTilt })
   }
 
   function handleMouseLeave() {
     setTilt({ x: 0, y: 0 })
+  }
+
+  function handlePolaroidClick() {
+    if (!isMobile) return
+    // Remove then re-add the class on the next frame so the animation
+    // restarts even if it's re-triggered mid-wobble.
+    setWobbling(false)
+    requestAnimationFrame(() => setWobbling(true))
+  }
+
+  function handleWobbleAnimationEnd(e: React.AnimationEvent<HTMLDivElement>) {
+    if (e.animationName === 'polaroidWobble') setWobbling(false)
   }
 
   const { src, alt } = images[1];
@@ -144,6 +229,7 @@ function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: bool
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={handlePolaroidClick}
       className="cursor-pointer"
       style={{
         perspective: '800px',
@@ -152,11 +238,12 @@ function ContentAvatar({ exiting, isMobile }: { exiting: boolean; isMobile: bool
         transition: exiting
           ? 'transform 0.75s ease-in, opacity 0.65s ease-in'
           : 'transform 0.6s ease-out, opacity 0.6s ease-out',
-        width: isMobile ? 'min(80vw, 380px)' : 'min(100%, 460px, 66vh)',
+        width: isMobile ? 'min(80vw, 380px)' : 'min(100%, 400px, 60vh)',
       }}
     >
       <div
-        className="transition-transform duration-200 ease-out"
+        className={`transition-transform duration-200 ease-out ${wobbling ? 'polaroid-wobble' : ''}`}
+        onAnimationEnd={handleWobbleAnimationEnd}
         style={{
           transform: `rotateX(${-tilt.x}deg) rotateY(${tilt.y}deg) rotate(-3deg)`,
         }}
